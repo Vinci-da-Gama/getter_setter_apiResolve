@@ -1,6 +1,9 @@
 // service js Document
 // $log.log("sigSrevice error line -- 15 --- data : "+data+" config: "+config+" status: "+status+".---");
-	/*sM.service('verifyNumStrObjArrUndefinedElem', ['$log', function($log){
+(function () {
+	var sM = angular.module('gsar.service');
+
+	sM.service('verifyNumStrObjArrUndefinedElem', ['$log', function($log){
 		
 		this.IsNumberAndGreaterThanZero = function (figure) {
 			var numBool = angular.isNumber(figure) && !isNaN(figure) && figure > 0;
@@ -18,7 +21,7 @@
 		};
 
 		this.IsUndefined = function (testimony) {
-			var refBool = angular.isUndefined(testimony);
+			var refBool = !angular.isUndefined(testimony) && testimony !== null;
 			return refBool;
 		};
 
@@ -35,12 +38,8 @@
 		this.IsArrayAndNotUnfilled = function (arr) {
 			var arrBool = angular.isArray(arr) && arr.length > 0 && typeof(arr) !== 'undefined';
 			return arrBool;
-		}
+		};
 
-	}]);*/
-(function () {
-	var sM = angular.module('appname.service');
-
-	// sM
+	}]);
 
 })();

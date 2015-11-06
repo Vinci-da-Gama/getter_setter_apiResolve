@@ -1,0 +1,21 @@
+<hr>
+<div>
+	<div class="row" ng-controller="p1EventCtrl">
+		<div class="col-sm-6 col-md-6">
+			<button type="button" class="btn btn-info" ng-click="displayClickEvent($event)">click to display $event</button>
+			<span class="badge">Click Event isTrust ?</span>
+			<br>
+			<caption>isTrust: <ins class="alert-danger">{{isTrust}}</ins></caption>
+			<br>
+			<b>css -> word-wrap : only work for &lt;p&gt; tag...</b>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<div class="well">
+				<caption>The Event Self (angular $event is jQuery Event Object)</caption>
+				<!-- <code class="event-text-wrap">{{eventSelf}}</code> -->
+				<!-- <em class="event-text-wrap">{{eventSelf}}</em> -->
+				<p class="event-text-wrap">{{eventSelf}}</p>
+			</div>
+		</div>
+	</div>
+</div>

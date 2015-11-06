@@ -1,0 +1,33 @@
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>Tab3 one-way bind benefit...</th>
+			<th>quick Sample</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>If the expression will not change once set, it is a candidate for one-time binding.</td>
+			<td>
+				<code>
+					someModule.directive('someDirective', function() {
+					<br>
+						return {
+						<br>
+						    scope: {
+						    <br>
+						      name: '=',
+						      <br>
+						      <ins>color: '@'</ins>
+						    },
+						    <br>
+						    <code>template: '\{\{name\}\}: \{\{color\}\}'</code>
+						    <br>
+						};
+					<br>
+					});
+				</code>
+			</td>
+		</tr>
+	</tbody>
+</table>

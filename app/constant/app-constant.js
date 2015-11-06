@@ -1,4 +1,8 @@
 (function () {
-	var cosM = angular.module('appname.constant');
+	var cosM = angular.module('gsar.constant');
+
+	cosM.constant('SIGN', {
+		tq: String.fromCharCode(9775)
+	});
 
 })();

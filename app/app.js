@@ -2,25 +2,26 @@
 
 	var anguNg = ['ngAria', 'ngSanitize', 'ngAnimate', 'ngMessages', 'ngNotify', 'ngTable'];
 	var anguEx = ['ui.bootstrap', 'mgcrea.ngStrap', 'angularMoment', 'bootstrapLightbox'];
-	var routerCtrl = ['appname.router', 'appname.ctrl'];
-	var cons = ['appname.constant'];
-	var serv = ['appname.sig.service', 'appname.service'];
-	var dir = ['appname.dir', 'appname.cust.dir'];
+	var routerCtrl = ['gsar.router', 'gsar.ctrl'];
+	var cons = ['gsar.constant'];
+	var serv = ['gsar.sig.service', 'gsar.service', 'gsar.gsservice'];
+	var dir = ['gsar.dir', 'gsar.cust.dir'];
 
-	var depedencyArr = anguNg.concat(anguEx, routerCtrl, cons, serv, dir);
+	var depedencyArr = anguNg.concat(routerCtrl, anguEx, cons, serv, dir);
 	/**
-	* appname Module
+	* gsar Module
 	*
 	* The main module of this application...
 	*/
-	angular.module('appname', depedencyArr);
+	angular.module('gsar', depedencyArr);
 
-	angular.module('appname.router', ['ui.router']);
-	angular.module('appname.constant', []);
-	angular.module('appname.sig.service', []);
-	angular.module('appname.service', []);
-	angular.module('appname.ctrl', []);
-	angular.module('appname.dir', ['appname.service', 'appname.sig.service']);
-	angular.module('appname.cust.dir', ['appname.service', 'appname.sig.service']);
+	angular.module('gsar.router', ['ui.router']);
+	angular.module('gsar.constant', []);
+	angular.module('gsar.sig.service', []);
+	angular.module('gsar.service', []);
+	angular.module('gsar.gsservice', []);
+	angular.module('gsar.ctrl', []);
+	angular.module('gsar.dir', ['gsar.service', 'gsar.sig.service']);
+	angular.module('gsar.cust.dir', ['gsar.service', 'gsar.sig.service']);
 
 })();

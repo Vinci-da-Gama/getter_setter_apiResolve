@@ -11,9 +11,14 @@ $bgBlue: rgba(20, 120, 200, .99);
 /* vender prefix */
 $venderList: "-webkit-", "-moz-", "-ms-", "-o-", "";
 
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 body.basictorso
 {
 	@include extendFlex($zp);
 	@include fontSmooth();
 }
 
+p.event-text-wrap {
+	word-wrap: break-word;
+}

@@ -1,0 +1,12 @@
+<div class="jumbotron" ng-controller="simpleOneWayBingCtrl">
+	<div class="container">
+		<p>
+			<dt>There are four names, keep clicking...</dt>
+			<a class="btn btn-primary btn-lg" ng-click="triggerOneTwoWayBinging()">display One Way bind and two way bind.</a>
+		</p>
+		<em>normal two way binding --> </em>
+		<strong>{{nameHere}}</strong>
+	</div>
+	<strong>One way binging --> </strong>
+	<code>{{::nameHere}}</code>
+</div>

@@ -1,0 +1,81 @@
+<uib-tabset>
+    <dl>
+        <dt>This is the direct parent to Emit Input. And Emit Input only goes here. The parent is p1Left.html</dt>
+        <dt>p1Left.html ctrl -> p1Ctrl -> It can be passed to anywhere...</dt>
+        <dt>Emit args could be array, obj or value -- args is the value itself.</dt>
+        <dd>receiveEmitValue -: <b class="alert-info">{{receiveEmitValue}}</b></dd>
+        <dd>receive Simple Directive Emit Value -: <strong class="alert-success">{{receiveSimpleDirEmitValue}}</strong></dd>
+    </dl>
+    <uib-tab heading="Broadcas_Tab">
+        <p1left-setter-data></p1left-setter-data>
+    </uib-tab>
+    <uib-tab heading="Emit_construct_Tab">
+        <p1left-emit-setter-construct></p1left-emit-setter-construct>
+    </uib-tab>
+    <uib-tab heading="Emit_construct_Receive_Tab">
+        <dl>
+            <dt>Emit_construct_Receive</dt>
+            <dd class="help-block">Emit_construct_Receive Value :- <span class="alert-danger">{{anotherTabBindTheEmitReceiveValue}}</span></dd>
+        </dl>
+    </uib-tab>
+    <uib-tab heading="Emit_simple_directive_Tab">
+        <div p1left-emit-setter-dire></div>
+    </uib-tab>
+    <uib-tab heading="Emit_simple_directive_Receive_Tab">
+        <span class="badge">Emit_simple_directive_Receive</span>
+        <ins>Emit_simple_directive_Receive Value :-- <span class="alert-warning">{{lastTabBindTheEmitReceiveValue}}</span></ins>
+    </uib-tab>
+</uib-tabset>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Beginning Title</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+</div>
+
+<dl>
+    <dt>This tabset will work with ng-include</dt>
+    <dd>(content1: $event (ngClick and ngFocus) content2: one-way-binding)</dd>
+</dl>
+
+<uib-tabset vertical="true" type="pills">
+    <uib-tab ng-repeat="tab in tabNgInclude" active="tab.active" select="triggerNgIncludeFunc($event)">
+        <uib-tab-heading>
+            {{tab.title}}
+        </uib-tab-heading>
+            <div ng-include="tab.url"></div>
+    </uib-tab>
+</uib-tabset>

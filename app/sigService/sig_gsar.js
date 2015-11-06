@@ -19,7 +19,7 @@
 
 }]);*/
 (function () {
-	var ssM = angular.module('appname.sig.service');
+	var ssM = angular.module('gsar.sig.service');
 
 	// ssM
 
