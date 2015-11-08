@@ -27,7 +27,13 @@
 			views: {
 				'': {
 					templateUrl: './templates/p2.html',
-					controller: 'p2Ctrl'
+					controller: 'p2Ctrl',
+					// resolve must in main View and Still need to put to partialView
+					resolve: {
+						CompanyList: ['CompanyAPI', function (CompanyAPI) {
+							return CompanyAPI.contentQuery(10, 1);
+						}]
+					}
 				},
 				'p2Left@p2': {
 					templateUrl: './templates/partials/p2/p2Left.html',
@@ -35,7 +41,13 @@
 				},
 				'p2Right@p2': {
 					templateUrl: './templates/partials/p2/p2Right.html',
-					controller: 'p2Ctrl'
+					controller: 'p2Ctrl',
+					// resolve Still need to put to partialView, beacuse they share same controller.
+					resolve: {
+						CompanyList: ['CompanyAPI', function (CompanyAPI) {
+							return CompanyAPI.contentQuery(10, 1);
+						}]
+					}
 				}
 			}
 		});

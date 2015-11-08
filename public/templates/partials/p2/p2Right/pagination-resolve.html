@@ -1,0 +1,41 @@
+<div>
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<!-- uncheckable: whether this button can be uncheckable, if it is true -> value null bind to ngModel -->
+			<!-- usually, it is uesless, just for some special requirement... -->
+			<div class=" btn-group">
+				<label type="button" class="btn btn-danger" ng-model="itemPerPage" ng-click="setPerPage(itemPerPage)" uib-btn-radio="10" uncheckable>10 PerPage</label>
+				<label type="button" class="btn btn-primary" ng-model="itemPerPage" ng-click="setPerPage(itemPerPage)" uib-btn-radio="20" uncheckable>20 PerPage</label>
+				<label type="button" class="btn btn-success" ng-model="itemPerPage" ng-click="setPerPage(itemPerPage)" uib-btn-radio="50" uncheckable>50 PrePage</label>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<uib-pagination boundary-links="true" total-items="pageAll.total_records" ng-model="pageAll.page_number" items-per-page="pageAll.page_size" class="pagination-sm" previous-text="&#9775;" next-text="&#9822;">
+			</uib-pagination>
+		</div>
+	</div>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Status</th>
+				<th>Address</th>
+				<th>Thumbnail</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="cpy in companyAll">
+				<td>{{cpy.display_name}}</td>
+				<td>{{cpy.email}}</td>
+				<td>{{cpy.phone}}</td>
+				<td>{{cpy.status}}</td>
+				<td>{{reformatAddress(cpy.address)}}</td>
+				<td>
+					<img ng-src="{{cpy.logo.path_to_file}}" alt="company logo...">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

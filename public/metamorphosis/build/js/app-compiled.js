@@ -3,9 +3,10 @@
 	var anguNg = ['ngAria', 'ngSanitize', 'ngAnimate', 'ngMessages', 'ngNotify', 'ngTable'];
 	var anguEx = ['ui.bootstrap', 'mgcrea.ngStrap', 'angularMoment', 'bootstrapLightbox'];
 	var routerCtrl = ['gsar.router', 'gsar.ctrl'];
-	var cons = ['gsar.constant'];
-	var serv = ['gsar.sig.service', 'gsar.service', 'gsar.gsservice'];
-	var dir = ['gsar.dir', 'gsar.cust.dir'];
+	var cons = ['gsar.constant', 'gsar.apiresolve.constant'];
+	var serv = ['gsar.sig.service', 'gsar.service', 'gsar.gsservice', 'gsar.usercounter.service', 'gsar.companyapi.service', 
+	'gsar.inforRequest.service'];
+	var dir = ['gsar.dir', 'gsar.cust.dir', 'gsar.custdir.apiresolve'];
 
 	var depedencyArr = anguNg.concat(routerCtrl, anguEx, cons, serv, dir);
 	/**
@@ -17,12 +18,17 @@
 
 	angular.module('gsar.router', ['ui.router']);
 	angular.module('gsar.constant', []);
+	angular.module('gsar.apiresolve.constant', []);
 	angular.module('gsar.sig.service', []);
 	angular.module('gsar.service', []);
+	angular.module('gsar.usercounter.service', []);
+	angular.module('gsar.companyapi.service', []);
+	angular.module('gsar.inforRequest.service', []);
 	angular.module('gsar.gsservice', []);
 	angular.module('gsar.ctrl', []);
 	angular.module('gsar.dir', ['gsar.service', 'gsar.sig.service']);
 	angular.module('gsar.cust.dir', ['gsar.service', 'gsar.sig.service']);
+	angular.module('gsar.custdir.apiresolve', ['gsar.service', 'gsar.usercounter.service', 'gsar.companyapi.service', 'gsar.inforRequest.service']);
 
 })();
 (function () {
@@ -54,7 +60,13 @@
 			views: {
 				'': {
 					templateUrl: './templates/p2.html',
-					controller: 'p2Ctrl'
+					controller: 'p2Ctrl',
+					// resolve must in main View and Still need to put to partialView
+					resolve: {
+						CompanyList: ['CompanyAPI', function (CompanyAPI) {
+							return CompanyAPI.contentQuery(10, 1);
+						}]
+					}
 				},
 				'p2Left@p2': {
 					templateUrl: './templates/partials/p2/p2Left.html',
@@ -62,12 +74,24 @@
 				},
 				'p2Right@p2': {
 					templateUrl: './templates/partials/p2/p2Right.html',
-					controller: 'p2Ctrl'
+					controller: 'p2Ctrl',
+					// resolve Still need to put to partialView, beacuse they share same controller.
+					resolve: {
+						CompanyList: ['CompanyAPI', function (CompanyAPI) {
+							return CompanyAPI.contentQuery(10, 1);
+						}]
+					}
 				}
 			}
 		});
 
 	}]);
+
+})();
+(function () {
+	var arcM = angular.module('gsar.apiresolve.constant');
+
+	arcM.constant('apiURL', 'http://api.demo.muulla.com/cms/merchant/all/active/');
 
 })();
 (function () {
@@ -134,23 +158,27 @@
 
 	ctrlM.controller('p2LeftCtrl', ['$scope', function($scope){
 		console.log('p2LeftCtrl...');
+		$scope.modalTitle = "Modat_Great_Title";
+		$scope.textModal = "Modat_callback-alert-function...";
 	}]);
 
-	ctrlM.controller('p2Ctrl', ['$scope', function($scope){
+	ctrlM.controller('p2Ctrl', ['$scope', 'CompanyList', function($scope, CompanyList){
 		console.log('p2Ctrl...');
+
+		// pass value to directive
+		$scope.companyAllInP2Ctrl = CompanyList.data;
+		$scope.pageAllInP2Ctrl = CompanyList.pagination;
+
+		console.log('$scope.companyAllInP2Ctrl --> ', $scope.companyAllInP2Ctrl);
+		console.log('$scope.pageAllInP2Ctrl --> ', $scope.pageAllInP2Ctrl);
+
+	}]);
+
+	ctrlM.controller('modalInstanceCtrl', ['$scope', function($scope){
+		console.log('This is modalInstanceCtrl...');
 	}]);
 
 })();
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -216,6 +244,133 @@
 			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
 			// template: '',
 			templateUrl: './templates/partials/p1/p1left-emit-setter-construct.html',
+			// replace: true,
+			// transclude: true,
+			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+			link: function($scope, iElm, iAttrs, controller) {
+				
+			}
+		};
+	}]);
+
+	cdM.directive('p1leftModal', ['$uibModal', function($uibModal){
+		return {
+			scope: {
+				'callback': '=',
+				'modalTitle': '=',
+				'modalText': '='
+			}, // {} = isolate, true = child, false/undefined = no change
+			controller: function($scope, $element, $attrs, $transclude, $uibModal) {
+				console.log('callback', $scope.callback);
+				console.log('modalTitle --> '+ $scope.modalTitle);
+				console.log('modalText --> '+$scope.modalText);
+
+				$scope.currentModalTitle = $scope.modalTitle;
+				$scope.currentModalText = $scope.modalText;
+
+				$scope.openModal = function (sizePassedIn) {
+					var modalObj = {
+						templateUrl: './templates/partials/p2/p2Left-modal.html',
+						controller: 'modalInstanceCtrl',
+						size: sizePassedIn
+					};
+					var modalInstance = $uibModal.open(modalObj);
+				};
+
+				// $scope.save = function () {
+				// };
+
+				// $scope.close = function () {
+				// };
+			},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			// templateUrl: './templates/partials/p2/p2Left-modal.html',
+			// replace: true,
+			// transclude: true,
+			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+			link: function($scope, iElm, iAttrs, ctrl) {}
+		};
+	}]);
+
+})();
+(function () {
+	var arM = angular.module('gsar.custdir.apiresolve');
+
+	arM.directive('paginationResolve', [function(){
+		return {
+			scope: {
+				'resolveValue': '=',
+				'resolvePagination': '='
+			}, // {} = isolate, true = child, false/undefined = no change
+			// CompanyList,
+			controller: function($scope, $element, $attrs, $transclude, CompanyAPI, $timeout) {
+				$scope.companyAll = $scope.resolveValue;
+				$scope.pageAll = $scope.resolvePagination;
+
+				console.log('$scope.companyAll --> ', $scope.companyAll);
+				console.log('$scope.pageAll --> ', $scope.pageAll);
+
+				// This is for displaying...
+				$scope.setPerPage = function (itemEachPage) {
+					var iep = parseInt(itemEachPage);
+					$scope.pageAll.page_size = iep;
+					$scope.pageAll.page_number = 1;
+				};
+
+				$scope.$watch('pageAll', function (nv, ov) {
+					if (nv !== ov) {
+						var howManyItemsPerPage = $scope.pageAll.page_size;
+						var howManyPagesWouldBeTurnedEachTime = $scope.pageAll.page_number;
+						CompanyAPI.contentQuery(howManyItemsPerPage, howManyPagesWouldBeTurnedEachTime)
+						.then(function (res) {
+							$scope.companyAll = res.data;
+						});
+					} else{
+						console.log('pagination doesn\'t change.');
+					}
+				}, true);
+
+				$scope.reformatAddress = function (companyAddress) {
+					var addr = [];
+
+					// these expressions are correct, but jshint prefer function...
+					companyAddress.address1 ? addr.push(companyAddress.address1) : null;
+					companyAddress.address2 ? addr.push(companyAddress.address2) : null;
+					companyAddress.suburb ? addr.push(companyAddress.suburb) : null;
+					companyAddress.state ? addr.push(companyAddress.state.split('-')[1]) : null;
+					companyAddress.country ? addr.push(companyAddress.country) : null;
+					companyAddress.postcode ? addr.push(companyAddress.postcode) : null;
+
+					return addr.join(', ');
+				};
+			},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			templateUrl: './templates/partials/p2/p2Right/pagination-resolve.html',
+			// replace: true,
+			// transclude: true,
+			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+			link: function($scope, iElm, iAttrs, controller) {
+				
+			}
+		};
+	}]);
+
+	arM.directive('spinnerLoader', [function(){
+		return {
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
+			controller: function($scope, $element, $attrs, $transclude, countLoad) {
+				$scope.loadCountFunc = countLoad.getCounter;
+				console.log('$scope.loadCountFunc --> ', $scope.loadCountFunc());
+				$scope.counterNum = countLoad.getCounter();
+			},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			templateUrl: './templates/partials/p2/p2Right/spinner-loader.html',
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
@@ -339,6 +494,89 @@
 			return passToOtherDirectiveValue;
 		};
 
+	}]);
+
+})();
+(function () {
+	var capiM = angular.module('gsar.companyapi.service');
+
+	capiM.service('CompanyAPI', ['userInfor', 'apiURL', 'inforInquiry', function(userInfor, apiURL, inforInquiry){
+		this.contentQuery = function (HowManyItemsEachPage, HowManyPagesWouldBeTurnedEachTime) {
+			var authorizedUser = userInfor.getUser();
+			var headerLocal = {
+				Authorization: authorizedUser.name+' '+authorizedUser.token
+			};
+			var cpyURL = apiURL+HowManyItemsEachPage+'/'+HowManyPagesWouldBeTurnedEachTime;
+			// don't forget return this function
+			return inforInquiry.$get(cpyURL, headerLocal);
+		};
+	}]);
+
+})();
+(function () {
+	var irM = angular.module('gsar.inforRequest.service');
+
+	irM.service('inforInquiry', ['$q', '$http', 'countLoad', function($q, $http, countLoad){
+		this.$get = function (url, header) {
+			var _def = $q.defer();
+			var httpObj = {
+				url: url,
+				headers: header,
+				method: 'GET'
+			};
+
+			countLoad.increaseLoadCount();
+
+			$http(httpObj)
+			.success(function (res) {
+				// after error, don't forget success...
+				countLoad.decreaseLoadCount();
+				_def.resolve(res);
+			})
+			.error(function(msg, config, status) {
+				countLoad.decreaseLoadCount();
+				_def.reject(msg);
+				console.log('error msg is: '+msg+' Error status: '+status+' The Config:--> '+ config);
+			});
+
+			// return promise, not promise function (promise())
+			return _def.promise;
+			// return _def.promise();
+		};
+
+	}]);
+
+})();
+(function () {
+	var ucsM = angular.module('gsar.usercounter.service');
+
+	ucsM.service('countLoad', [function(){
+		var loadCount = 0;
+
+		this.getCounter = function () {
+			return loadCount;
+		};
+
+		this.increaseLoadCount = function () {
+			return ++loadCount;
+		};
+
+		this.decreaseLoadCount = function () {
+			return --loadCount;
+		};
+
+	}]);
+
+	ucsM.service('userInfor', [function(){
+		var name = 'Bearer';
+		var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1NGQxOTY4MGI1MWMxNTI2MGI5NDRmZDUiLCJpc3N1ZV9kYXRlIjoiMjAxNS0wOS0wOVQwNToxMzo1My40NThaIn0.Hk2XypA_KMUnIKdSVYnwq3Rn3QyMNSQ-e80-sZsA9bY';
+		
+		this.getUser = function () {
+			return {
+				name: name,
+				token: token
+			};
+		};
 	}]);
 
 })();

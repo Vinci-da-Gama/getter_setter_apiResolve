@@ -22,3 +22,14 @@ body.basictorso
 p.event-text-wrap {
 	word-wrap: break-word;
 }
+
+.page-synopsis {
+	width: 99.6%;
+	margin: 0 auto;
+}
+
+.well-padleft-zero {
+	padding-left: 0px;
+}
+
+@import "./spinner.scss";

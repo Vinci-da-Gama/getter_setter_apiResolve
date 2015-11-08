@@ -61,4 +61,45 @@
 		};
 	}]);
 
+	cdM.directive('p1leftModal', ['$uibModal', function($uibModal){
+		return {
+			scope: {
+				'callback': '=',
+				'modalTitle': '=',
+				'modalText': '='
+			}, // {} = isolate, true = child, false/undefined = no change
+			controller: function($scope, $element, $attrs, $transclude, $uibModal) {
+				console.log('callback', $scope.callback);
+				console.log('modalTitle --> '+ $scope.modalTitle);
+				console.log('modalText --> '+$scope.modalText);
+
+				$scope.currentModalTitle = $scope.modalTitle;
+				$scope.currentModalText = $scope.modalText;
+
+				$scope.openModal = function (sizePassedIn) {
+					var modalObj = {
+						templateUrl: './templates/partials/p2/p2Left-modal.html',
+						controller: 'modalInstanceCtrl',
+						size: sizePassedIn
+					};
+					var modalInstance = $uibModal.open(modalObj);
+				};
+
+				// $scope.save = function () {
+				// };
+
+				// $scope.close = function () {
+				// };
+			},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			// templateUrl: './templates/partials/p2/p2Left-modal.html',
+			// replace: true,
+			// transclude: true,
+			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+			link: function($scope, iElm, iAttrs, ctrl) {}
+		};
+	}]);
+
 })();
