@@ -55,7 +55,11 @@
 	ctrlM.controller('p2LeftCtrl', ['$scope', function($scope){
 		console.log('p2LeftCtrl...');
 		$scope.modalTitle = "Modat_Great_Title";
-		$scope.textModal = "Modat_callback-alert-function...";
+		$scope.textModal = "Modat_callback-alert-function...May_Day.May_Day.";
+		$scope.sayHelloLocalLevel = function (p2leftCtrlTitle) {
+			alert('p2LeftCtrl modal Title - is -> '+p2leftCtrlTitle);
+			console.log('p2LeftCtrl modal Title - is -> '+p2leftCtrlTitle);
+		};
 	}]);
 
 	ctrlM.controller('p2Ctrl', ['$scope', 'CompanyList', function($scope, CompanyList){
@@ -68,10 +72,6 @@
 		console.log('$scope.companyAllInP2Ctrl --> ', $scope.companyAllInP2Ctrl);
 		console.log('$scope.pageAllInP2Ctrl --> ', $scope.pageAllInP2Ctrl);
 
-	}]);
-
-	ctrlM.controller('modalInstanceCtrl', ['$scope', function($scope){
-		console.log('This is modalInstanceCtrl...');
 	}]);
 
 })();

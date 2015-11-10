@@ -159,7 +159,11 @@
 	ctrlM.controller('p2LeftCtrl', ['$scope', function($scope){
 		console.log('p2LeftCtrl...');
 		$scope.modalTitle = "Modat_Great_Title";
-		$scope.textModal = "Modat_callback-alert-function...";
+		$scope.textModal = "Modat_callback-alert-function...May_Day.May_Day.";
+		$scope.sayHelloLocalLevel = function (p2leftCtrlTitle) {
+			alert('p2LeftCtrl modal Title - is -> '+p2leftCtrlTitle);
+			console.log('p2LeftCtrl modal Title - is -> '+p2leftCtrlTitle);
+		};
 	}]);
 
 	ctrlM.controller('p2Ctrl', ['$scope', 'CompanyList', function($scope, CompanyList){
@@ -172,10 +176,6 @@
 		console.log('$scope.companyAllInP2Ctrl --> ', $scope.companyAllInP2Ctrl);
 		console.log('$scope.pageAllInP2Ctrl --> ', $scope.pageAllInP2Ctrl);
 
-	}]);
-
-	ctrlM.controller('modalInstanceCtrl', ['$scope', function($scope){
-		console.log('This is modalInstanceCtrl...');
 	}]);
 
 })();
@@ -253,44 +253,48 @@
 		};
 	}]);
 
-	cdM.directive('p1leftModal', ['$uibModal', function($uibModal){
+	cdM.directive('p2leftModal', ['$uibModal', function($uibModal){
 		return {
 			scope: {
-				'callback': '=',
-				'modalTitle': '=',
-				'modalText': '='
+				// 'callback': '&',
+				'modalTitle': '@',
+				'modalText': '@',
+				'callbackfunction': '&'
 			}, // {} = isolate, true = child, false/undefined = no change
-			controller: function($scope, $element, $attrs, $transclude, $uibModal) {
-				console.log('callback', $scope.callback);
-				console.log('modalTitle --> '+ $scope.modalTitle);
-				console.log('modalText --> '+$scope.modalText);
-
-				$scope.currentModalTitle = $scope.modalTitle;
-				$scope.currentModalText = $scope.modalText;
-
-				$scope.openModal = function (sizePassedIn) {
-					var modalObj = {
-						templateUrl: './templates/partials/p2/p2Left-modal.html',
-						controller: 'modalInstanceCtrl',
-						size: sizePassedIn
-					};
-					var modalInstance = $uibModal.open(modalObj);
-				};
-
-				// $scope.save = function () {
-				// };
-
-				// $scope.close = function () {
-				// };
-			},
+			// controller: function($scope, $element, $attrs, $transclude, $uibModal) {},
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
 			// template: '',
 			// templateUrl: './templates/partials/p2/p2Left-modal.html',
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-			link: function($scope, iElm, iAttrs, ctrl) {}
+			link: function($scope, iElm, iAttrs, ctrl) {
+				iElm.bind('click', function() {
+					var modalObj = {
+						scope: $scope,
+						templateUrl: './templates/partials/p2/p2Left-modal.html',
+						size: 'md'
+					};
+
+					$scope.modalInstance = $uibModal.open(modalObj);
+					$scope.modalInstance.result.then($scope.callbackfunction);
+					$scope.currentModalTitle = $scope.modalTitle;
+					$scope.currentModalText = $scope.modalText;
+
+				});
+
+				$scope.save = function (maydayTitle) {
+					alert('inside modal - Title is -> '+maydayTitle);
+					console.log('inside modal - Title is -> '+maydayTitle);
+					$scope.modalInstance.close();
+				};
+
+				$scope.close = function (maydayTitle) {
+					$scope.modalInstance.dismiss('cancel');
+				};
+
+			}
 		};
 	}]);
 
