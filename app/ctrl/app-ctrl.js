@@ -31,6 +31,13 @@
 
 	ctrlM.controller('p1RightCtrl', ['$scope', function($scope){
 		console.log('this is p1RightCtrl...');
+		$scope.p1leftModalTitle = "May_Day in page 1 right...";
+		$scope.p1leftModalContent = "Content modal wocao in page 1 right...";
+		
+		$scope.sayHiInCurrentLevel = function (p1RightModalPassedIn) {
+			alert('p1-Right-Modal-Passed-In --> '+p1RightModalPassedIn);
+			console.log('p1-Right-Modal-Passed-In --> '+p1RightModalPassedIn);
+		};
 	}]);
 
 	ctrlM.controller('p1EventCtrl', ['$scope', function($scope){

@@ -135,6 +135,13 @@
 
 	ctrlM.controller('p1RightCtrl', ['$scope', function($scope){
 		console.log('this is p1RightCtrl...');
+		$scope.p1leftModalTitle = "May_Day in page 1 right...";
+		$scope.p1leftModalContent = "Content modal wocao in page 1 right...";
+		
+		$scope.sayHiInCurrentLevel = function (p1RightModalPassedIn) {
+			alert('p1-Right-Modal-Passed-In --> '+p1RightModalPassedIn);
+			console.log('p1-Right-Modal-Passed-In --> '+p1RightModalPassedIn);
+		};
 	}]);
 
 	ctrlM.controller('p1EventCtrl', ['$scope', function($scope){
@@ -249,6 +256,50 @@
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 			link: function($scope, iElm, iAttrs, controller) {
 				
+			}
+		};
+	}]);
+
+	cdM.directive('p1rightModal', ['$uibModal', function($uibModal){
+		return {
+			scope: {
+				'modalTitle': '@',
+				'modalContent': '@',
+				'callbackfunction': '&'
+			}, // {} = isolate, true = child, false/undefined = no change
+			// controller: function($scope, $element, $attrs, $transclude) {},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			// templateUrl: '',
+			// replace: true,
+			// transclude: true,
+			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+			link: function($scope, iElm, iAttrs, controller) {
+				iElm.bind('click', function() {
+					$scope.curModalTitle = $scope.modalTitle;
+					$scope.curModalText = $scope.modalContent;
+
+					var modalObj = {
+						scope: $scope,
+						templateUrl: './templates/partials/p1/p1right-modal.html',
+						size: 'md'
+					};
+
+					$scope.modalInstance = $uibModal.open(modalObj);
+					$scope.modalInstance.result.then($scope.callbackfunction);
+
+				});
+
+				$scope.save = function (saveItem) {
+					alert('p1 right modal value -> '+saveItem);
+					console.log('p1 right modal value -> '+saveItem);
+					$scope.modalInstance.close();
+				};
+
+				$scope.close = function (saveItem) {
+					$scope.modalInstance.dismiss('cancel');
+				};
 			}
 		};
 	}]);

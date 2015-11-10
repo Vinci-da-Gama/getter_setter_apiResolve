@@ -1,0 +1,12 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+		<h4 class="modal-title">{{curModalTitle}}</h4>
+	</div>
+	<div class="modal-body">{{curModalText}}</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" ng-click="save(curModalTitle)">Save changes</button>
+		<button type="button" class="btn btn-default" ng-click="close()">Close</button>
+	</div>
+</div>
